@@ -1,5 +1,8 @@
 const { pick } = require("ramda");
-const { getLightsState } = require("./components/light-schedule");
+const {
+  getLightsState,
+  syncWithMosRuLightSchedule,
+} = require("./components/light-schedule");
 const intentClassifier = require("./components/intent-classifier");
 const buildStatement = require("./components/statement-builder");
 
@@ -52,4 +55,10 @@ module.exports.main = async (event) => {
         )
       );
   }
+};
+
+module.exports.recache = async (event) => {
+  console.log("Start refreshing cache");
+  await syncWithMosRuLightSchedule();
+  console.log("Done");
 };

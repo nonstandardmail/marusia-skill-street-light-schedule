@@ -13,9 +13,9 @@ module.exports = class LightSchedule {
   async loadEvents() {
     let events = R.map(
       (event) => Object.assign(event, { datetime: moment(event.datetime) }),
-      await s3Cache.read(this.s3CacheKey)
+      (await s3Cache.read(this.s3CacheKey)) || []
     );
-    if (events !== null) {
+    if (events.length !== 0) {
       this.events = events;
     } else {
       await this.syncWithMosRuLightSchedule();
@@ -26,7 +26,8 @@ module.exports = class LightSchedule {
     this.events = this.normalizeMosRuLightSchedule(
       await mosRuAPI.fetchLightSchedule()
     );
-    await s3Cache.write(this.s3CacheKey, this.events);
+    if (this.events && this.events.length)
+      await s3Cache.write(this.s3CacheKey, this.events);
   }
 
   normalizeMosRuLightSchedule(mosRuLightSchedule) {

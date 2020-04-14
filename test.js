@@ -3,14 +3,14 @@ const Axios = require("axios");
 const axios = Axios.create({
   baseURL: "https://l0efcraswa.execute-api.eu-central-1.amazonaws.com/staging/",
 });
-const testPhrases = require("./test-phrases.json");
+const testUtterances = require("./test-utterances.json");
 const requestBody = require("./example-request.json");
 
 test("Handles all implicit invocation phrases", async (t) => {
-  for (const testPhrase of testPhrases) {
-    requestBody.request["original_utterance"] = testPhrase;
+  for (const testUtternace of testUtterances) {
+    requestBody.request["original_utterance"] = testUtternace;
     const response = await axios.post("main", requestBody);
-    console.log(testPhrase);
+    console.log(testUtternace);
     console.log("├── text:", response.data.response.text);
     console.log("└── tts:", response.data.response.tts);
   }

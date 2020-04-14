@@ -1,7 +1,10 @@
-const LightChedule = require("./models/light-schedule");
+const LightSchedule = require("./models/light-schedule");
 
-const lightChedule = new LightChedule();
+const lightSchedule = new LightSchedule();
 
 module.exports = {
-  getLightsState: lightChedule.getLightsState.bind(lightChedule),
+  getLightsState: lightSchedule.getLightsState.bind(lightSchedule),
+  syncWithMosRuLightSchedule: lightSchedule.syncWithMosRuLightSchedule.bind(
+    lightSchedule
+  ),
 };

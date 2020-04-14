@@ -24,10 +24,18 @@ provider:
 functions:
   main:
     handler: handler.main
+    memorySize: 256
+    timeout: 5
     events:
       - http:
           path: "main"
           method: post
+  recache:
+    handler: handler.recache
+    memorySize: 256
+    timeout: 120
+    events:
+      - schedule: rate(1 hour)
 
 resources:
   Resources:
