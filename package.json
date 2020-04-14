@@ -10,9 +10,11 @@
     "moment-timezone": "^0.5.28",
     "ramda": "^0.27.0"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "ava": "^3.7.0"
+  },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "ava --verbose --series"
   },
   "keywords": [],
   "author": "",

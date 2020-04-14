@@ -16,7 +16,6 @@ module.exports = class LightSchedule {
       await s3Cache.read(this.s3CacheKey)
     );
     if (events !== null) {
-      console.log("events loaded from s3. Sample:", events[0]);
       this.events = events;
     } else {
       await this.syncWithMosRuLightSchedule();
@@ -27,7 +26,6 @@ module.exports = class LightSchedule {
     this.events = this.normalizeMosRuLightSchedule(
       await mosRuAPI.fetchLightSchedule()
     );
-    console.log("events loaded from API. Sample:", this.events[0]);
     await s3Cache.write(this.s3CacheKey, this.events);
   }
 
@@ -60,9 +58,7 @@ module.exports = class LightSchedule {
   }
 
   async getLightsState() {
-    console.time("eventsload");
     if (this.events.length === 0) await this.loadEvents();
-    console.timeEnd("eventsload");
     const eventDidNotOccureYet = R.pipe(R.prop("datetime"), R.lte(new Date()));
     const upcomingEventIndex = R.findIndex(eventDidNotOccureYet, this.events);
     const upcomingEvent = this.events[upcomingEventIndex];
