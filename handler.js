@@ -3,25 +3,33 @@ const {
   getLightsState,
   syncWithMosRuLightSchedule,
 } = require("./components/light-schedule");
+const analytics = require("./components/analytics");
 const intentClassifier = require("./components/intent-classifier");
 const buildStatement = require("./components/statement-builder");
 
-const respond = (requestBody, { text, tts }) => ({
-  statusCode: 200,
-  body: JSON.stringify({
-    response: {
-      text,
-      tts,
-      end_session: true,
-    },
-    session: pick(["session_id", "message_id", "user_id"], requestBody.session),
-    version: requestBody.version,
-  }),
-});
+const respond = async (requestBody, { text, tts }) => {
+  await analytics.trackAgentMessage(requestBody, text);
+  return {
+    statusCode: 200,
+    body: JSON.stringify({
+      response: {
+        text,
+        tts,
+        end_session: true,
+      },
+      session: pick(
+        ["session_id", "message_id", "user_id"],
+        requestBody.session
+      ),
+      version: requestBody.version,
+    }),
+  };
+};
 
 module.exports.main = async (event) => {
   const body = JSON.parse(event.body);
   const intent = intentClassifier(body.request["original_utterance"]);
+  await analytics.trackUserMessage(body, intent);
   if (intent === null) {
     return respond(body, {
       text: "Не могу ответить.",
@@ -33,7 +41,7 @@ module.exports.main = async (event) => {
 
   switch (intent) {
     case "ask-light-on-time":
-      return respond(
+      return await respond(
         body,
         buildStatement(
           lightState.isOn
@@ -44,7 +52,7 @@ module.exports.main = async (event) => {
         )
       );
     case "ask-light-off-time":
-      return respond(
+      return await respond(
         body,
         buildStatement(
           lightState.isOn

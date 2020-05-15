@@ -15,6 +15,7 @@ provider:
     region: ${self:provider.region}
     s3CacheBucket: ${self:custom.s3CacheBucket}
     mosRuAPIKey: ${ssm:mosru-opendata-api-key}
+    chatbaseKey: ${ssm:marusia-skill-street-lights-chatbase-key-${self:custom.stage}}
   iamRoleStatements:
     - Effect: Allow
       Action:
