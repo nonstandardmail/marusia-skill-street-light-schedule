@@ -6,7 +6,7 @@
   "dependencies": {
     "@google/chatbase": "^1.1.2",
     "aws-sdk": "^2.656.0",
-    "axios": "^0.19.2",
+    "axios": "^0.21.1",
     "bluebird": "^3.7.2",
     "moment-timezone": "^0.5.28",
     "ramda": "^0.27.0"
