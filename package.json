@@ -5,7 +5,7 @@
   "main": "handler.js",
   "dependencies": {
     "@google/chatbase": "^1.1.2",
-    "aws-sdk": "^2.656.0",
+    "aws-sdk": "^2.814.0",
     "axios": "^0.19.2",
     "bluebird": "^3.7.2",
     "moment-timezone": "^0.5.28",
